@@ -1,0 +1,39 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: web
+spec:
+  parentRefs:
+  - kind: Gateway
+    name: external-http
+    namespace: default
+  rules:
+  - matches:
+    - path:
+        value: "/"
+      headers:
+      - name: IGEnvironment
+        value: web
+    backendRefs:
+    - name: web
+      port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: api
+spec:
+  parentRefs:
+  - kind: Gateway
+    name: external-http
+    namespace: default
+  rules:
+  - matches:
+    - path:
+        value: "/"
+      headers:
+      - name: IGEnvironment
+        value: api
+    backendRefs:
+    - name: api
+      port: 80
